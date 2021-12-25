@@ -12,6 +12,7 @@ namespace Rent_a_Car.Models.Concerets
     public class Customer : IDisposable, IUser
     {
 
+        public int ID { get; set; }
         [Required(ErrorMessage ="TC Kimlik Numarası Zorunludur.") ]
         [StringLength(11, MinimumLength = 11)]
         public string TC { get; set; }

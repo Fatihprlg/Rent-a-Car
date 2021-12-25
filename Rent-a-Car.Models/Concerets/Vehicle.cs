@@ -9,6 +9,7 @@ namespace Rent_a_Car.Models.Concerets
 {
     public class Vehicle : IDisposable
     {
+        public int ID { get; set; }
         [Required(ErrorMessage = "Plaka Zorunludur.")]
         [StringLength(10, MinimumLength = 4)]
         public string Plaka { get; set; }
