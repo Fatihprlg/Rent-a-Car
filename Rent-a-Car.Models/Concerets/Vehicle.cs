@@ -42,7 +42,7 @@ namespace Rent_a_Car.Models.Concerets
         public int GunlukKMSinir { get; set; }
 
         [Required(ErrorMessage = "Günlük Fiyat Zorunludur.")]
-        public float GunlukFiyat { get; set; }
+        public double GunlukFiyat { get; set; }
 
         [Required(ErrorMessage = "Airbag Zorunludur.")]
         public bool Airbag { get; set; }

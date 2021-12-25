@@ -9,15 +9,15 @@ namespace Rent_a_Car.Models.Concerets
 {
     public class Rent: IDisposable
     {
-        public string IslemID { get; set; }
+        public int IslemID { get; set; }
         
         [Required(ErrorMessage = "Plaka Zorunludur.")]
         [StringLength(50, MinimumLength = 3)]
-        public string AracPlaka { get; set; }
+        public int AracID { get; set; }
 
         [Required(ErrorMessage = "Musteri TC Zorunludur.")]
         [StringLength(11, MinimumLength = 11)]
-        public string MusteriTC { get; set; }
+        public int MusteriID { get; set; }
 
         [Required(ErrorMessage = "Kiralama Başlangıç Tarihi Zorunludur.")]
         public DateTime KiralamaBaslangici { get; set; }
@@ -27,6 +27,9 @@ namespace Rent_a_Car.Models.Concerets
 
         [Required(ErrorMessage = "Başlangıç Kilometre Zorunludur.")]
         public long BaslangicKM { get; set; }
+
+        [Required(ErrorMessage ="Alinan Ucret Zournludur.")]
+        public double AlinanUcret { get; set; }
 
         public long? TeslimKM { get; set; } 
 

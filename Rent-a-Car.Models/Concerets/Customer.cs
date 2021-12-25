@@ -38,10 +38,10 @@ namespace Rent_a_Car.Models.Concerets
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Ehliyet Yaşı Zorunludur.")]
-        public int EhliyetYasi { get; set; }
+        public byte EhliyetYasi { get; set; }
 
         [Required(ErrorMessage = "Yaş Zorunludur.")]
-        public int Yas { get; set; }
+        public byte Yas { get; set; }
 
         public void Dispose()
         {
