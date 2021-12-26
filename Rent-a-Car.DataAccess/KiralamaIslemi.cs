@@ -15,12 +15,12 @@ namespace Rent_a_Car.DataAccess
     public partial class KiralamaIslemi
     {
         public int IslemID { get; set; }
+        public int AracID { get; set; }
+        public int MusteriID { get; set; }
         public System.DateTime KiralamaBaslangici { get; set; }
         public System.DateTime KiralamaBitisi { get; set; }
         public long BaslangicKM { get; set; }
         public Nullable<long> TeslimKM { get; set; }
         public double AlinanUcret { get; set; }
-        public string AracID { get; set; }
-        public string MusteriID { get; set; }
     }
 }

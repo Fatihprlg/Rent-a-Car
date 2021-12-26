@@ -123,19 +123,6 @@
           <Property Name="Telefon" Type="String" MaxLength="11" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Isim" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="KiralamaIslemi">
-          <Key>
-            <PropertyRef Name="IslemID" />
-          </Key>
-          <Property Name="IslemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="KiralamaBaslangici" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="KiralamaBitisi" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="BaslangicKM" Type="Int64" Nullable="false" />
-          <Property Name="TeslimKM" Type="Int64" />
-          <Property Name="AlinanUcret" Type="Double" Nullable="false" />
-          <Property Name="AracID" Type="String" Nullable="false" />
-          <Property Name="MusteriID" Type="String" Nullable="false" />
-        </EntityType>
         <EntityType Name="Musteri">
           <Key>
             <PropertyRef Name="ID" />
@@ -167,10 +154,23 @@
         <EntityContainer Name="AracLazimEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Araba" EntityType="Self.Araba" />
           <EntitySet Name="Calisan" EntityType="Self.Calisan" />
-          <EntitySet Name="KiralamaIslemi" EntityType="Self.KiralamaIslemi" />
           <EntitySet Name="Musteri" EntityType="Self.Musteri" />
           <EntitySet Name="Yonetici" EntityType="Self.Yonetici" />
+          <EntitySet Name="KiralamaIslemis" EntityType="AracLazimModel.KiralamaIslemi" />
         </EntityContainer>
+        <EntityType Name="KiralamaIslemi">
+          <Key>
+            <PropertyRef Name="IslemID" />
+          </Key>
+          <Property Name="IslemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AracID" Type="Int32" Nullable="false" />
+          <Property Name="MusteriID" Type="Int32" Nullable="false" />
+          <Property Name="KiralamaBaslangici" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="KiralamaBitisi" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="BaslangicKM" Type="Int64" Nullable="false" />
+          <Property Name="TeslimKM" Type="Int64" />
+          <Property Name="AlinanUcret" Type="Double" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -210,20 +210,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="KiralamaIslemi">
-            <EntityTypeMapping TypeName="AracLazimModel.KiralamaIslemi">
-              <MappingFragment StoreEntitySet="KiralamaIslemi">
-                <ScalarProperty Name="MusteriID" ColumnName="MusteriID" />
-                <ScalarProperty Name="AracID" ColumnName="AracID" />
-                <ScalarProperty Name="IslemID" ColumnName="IslemID" />
-                <ScalarProperty Name="KiralamaBaslangici" ColumnName="KiralamaBaslangici" />
-                <ScalarProperty Name="KiralamaBitisi" ColumnName="KiralamaBitisi" />
-                <ScalarProperty Name="BaslangicKM" ColumnName="BaslangicKM" />
-                <ScalarProperty Name="TeslimKM" ColumnName="TeslimKM" />
-                <ScalarProperty Name="AlinanUcret" ColumnName="AlinanUcret" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Musteri">
             <EntityTypeMapping TypeName="AracLazimModel.Musteri">
               <MappingFragment StoreEntitySet="Musteri">
@@ -252,6 +238,20 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="KiralamaIslemis">
+            <EntityTypeMapping TypeName="AracLazimModel.KiralamaIslemi">
+              <MappingFragment StoreEntitySet="KiralamaIslemi">
+                <ScalarProperty Name="AlinanUcret" ColumnName="AlinanUcret" />
+                <ScalarProperty Name="TeslimKM" ColumnName="TeslimKM" />
+                <ScalarProperty Name="BaslangicKM" ColumnName="BaslangicKM" />
+                <ScalarProperty Name="KiralamaBitisi" ColumnName="KiralamaBitisi" />
+                <ScalarProperty Name="KiralamaBaslangici" ColumnName="KiralamaBaslangici" />
+                <ScalarProperty Name="MusteriID" ColumnName="MusteriID" />
+                <ScalarProperty Name="AracID" ColumnName="AracID" />
+                <ScalarProperty Name="IslemID" ColumnName="IslemID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -266,7 +266,7 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />

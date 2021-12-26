@@ -27,8 +27,8 @@ namespace Rent_a_Car.DataAccess
     
         public virtual DbSet<Araba> Araba { get; set; }
         public virtual DbSet<Calisan> Calisan { get; set; }
-        public virtual DbSet<KiralamaIslemi> KiralamaIslemi { get; set; }
         public virtual DbSet<Musteri> Musteri { get; set; }
         public virtual DbSet<Yonetici> Yonetici { get; set; }
+        public virtual DbSet<KiralamaIslemi> KiralamaIslemi { get; set; }
     }
 }
