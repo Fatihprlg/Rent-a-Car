@@ -43,8 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstractions\LogBase.cs" />
-    <Compile Include="Conceretes\Data\CsType.cs" />
-    <Compile Include="Conceretes\Helpers\DBHelper.cs" />
     <Compile Include="Conceretes\Helpers\ExceptionHelper.cs" />
     <Compile Include="Conceretes\Helpers\FileHelper.cs" />
     <Compile Include="Conceretes\Helpers\LogHelper.cs" />
@@ -54,6 +52,8 @@
     <Compile Include="Conceretes\Loggers\LogTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Conceretes\Data\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
