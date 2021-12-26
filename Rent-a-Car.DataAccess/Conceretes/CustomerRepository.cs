@@ -1,11 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Rent_a_Car.Commons.Conceretes.Data;
 using Rent_a_Car.Commons.Conceretes.Helpers;
 using Rent_a_Car.Commons.Conceretes.Loggers;
 using Rent_a_Car.DataAccess.Abstractions;
@@ -15,63 +14,15 @@ namespace Rent_a_Car.DataAccess.Conceretes
 {
     public class CustomerRepository : IRepository<Customer>, IDisposable
     {
-        private string _connectionString;
-        private string _dbProviderName;
-        private DbProviderFactory _dbProviderFactory;
-        private int _rowsAffected, _errorCode;
-        private bool _bDisposed;
 
         public bool DeleteById(int id)
         {
-            _errorCode = 0;
-            _rowsAffected = 0;
 
             try
             {
-                var query = new StringBuilder();
-                query.Append("DELETE ");
-                query.Append("FROM [dbo].[Musteri] ");
-                query.Append("WHERE ");
-                query.Append("[ID] = @id ");
-                query.Append("SELECT @intErrorCode=@@ERROR; ");
-
-                var commandText = query.ToString();
-                query.Clear();
-
-                using (var dbConnection = _dbProviderFactory.CreateConnection())
+                using (AracLazimEntities data = new AracLazimEntities())
                 {
-                    if (dbConnection == null)
-                        throw new ArgumentNullException("dbConnection", "The db connection can't be null.");
-
-                    dbConnection.ConnectionString = _connectionString;
-
-                    using (var dbCommand = _dbProviderFactory.CreateCommand())
-                    {
-                        if (dbCommand == null)
-                            throw new ArgumentNullException(
-                                "dbCommand" + " The db SelectById command for entity [Musteri] can't be null. ");
-
-                        dbCommand.Connection = dbConnection;
-                        dbCommand.CommandText = commandText;
-
-                        //Input Parameters
-                        DBHelper.AddParameter(dbCommand, "@id", CsType.Int, ParameterDirection.Input, id);
-
-                        //Output Parameters
-                        DBHelper.AddParameter(dbCommand, "@intErrorCode", CsType.Int, ParameterDirection.Output, null);
-
-                        //Open Connection
-                        if (dbConnection.State != ConnectionState.Open)
-                            dbConnection.Open();
-                        //Execute query
-                        _rowsAffected = dbCommand.ExecuteNonQuery();
-                        _errorCode = int.Parse(dbCommand.Parameters["@intErrorCode"].Value.ToString());
-
-                        if (_errorCode != 0)
-                            throw new Exception(
-                                "Deleting Error for entity [Musteri] reported the Database ErrorCode: " +
-                                _errorCode);
-                    }
+                    data.Musteri.Remove(data.Musteri.Where(c => c.ID == id).FirstOrDefault());
                 }
                 //Return the results of query/ies
                 return true;
@@ -79,49 +30,136 @@ namespace Rent_a_Car.DataAccess.Conceretes
             catch (Exception ex)
             {
                 LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
-                throw new Exception("CustomersRepository::Insert:Error occured.", ex);
+                throw new Exception("CustomerRepository::Insert:Error occured.", ex);
             }
         }
 
-
         public bool Insert(Customer entity)
         {
-            throw new NotImplementedException();
+
+            try
+            {
+                using (AracLazimEntities data = new AracLazimEntities())
+                {
+                    Musteri musteri  = new Musteri()
+                    {
+                        TC = entity.TC,
+                        Isim = entity.Isim,
+                        Soyisim = entity.Soyisim,
+                        Telefon = entity.Telefon,
+                        Email = entity.Email,
+                        Adres = entity.Adres,
+                        EhliyetYasi = entity.EhliyetYasi,
+                        Yas = entity.Yas
+                    };
+                    data.Musteri.Add(musteri);
+                    data.SaveChanges();
+                }
+                //Return the results of query/ies
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
+                throw new Exception("CustomerRepository::Insert:Error occured.", ex);
+            }
         }
 
         public IList<Customer> SelectAll()
         {
-            throw new NotImplementedException();
+            IList<Customer> musteriler= new List<Customer>();
+            try
+            {
+                using (AracLazimEntities data = new AracLazimEntities())
+                {
+                    var musteriListesi = from m in data.Musteri select m;
+
+                    foreach (var m in musteriListesi)
+                    {
+                        Customer temp = new Customer();
+                        temp.ID = m.ID;
+                        temp.TC = m.TC;
+                        temp.Isim = m.Isim;
+                        temp.Soyisim = m.Soyisim;
+                        temp.Telefon = m.Telefon;
+                        temp.Email = m.Email;
+                        temp.Adres = m.Adres;
+                        temp.EhliyetYasi = m.EhliyetYasi;
+                        temp.Yas = m.Yas;
+                        musteriler.Add(temp);
+                    }
+                    return musteriler;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
+                throw new Exception("CustomerRepository::Update:Error occured.", ex);
+            }
+
         }
 
         public Customer SelectById(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Customer entity = new Customer();
+                using (AracLazimEntities data = new AracLazimEntities())
+                {
+                    Musteri musteri = data.Musteri.Where(m => m.ID == id).FirstOrDefault();
+
+                    entity.ID = musteri.ID;
+                    entity.TC = musteri.TC;
+                    entity.Isim = musteri.Isim;
+                    entity.Soyisim = musteri.Soyisim;
+                    entity.Telefon = musteri.Telefon;
+                    entity.Email = musteri.Email;
+                    entity.Adres = musteri.Adres;
+                    entity.EhliyetYasi = musteri.EhliyetYasi;
+                    entity.Yas = musteri.Yas;
+                }
+                return entity;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
+                throw new Exception("CustomerRepository::Update:Error occured.", ex);
+            }
         }
 
         public bool Update(Customer entity)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (AracLazimEntities data = new AracLazimEntities())
+                {
+                    Musteri musteri = data.Musteri.Where(y => y.ID == entity.ID).FirstOrDefault();
+
+                    musteri.TC = entity.TC;
+                    musteri.Isim = entity.Isim;
+                    musteri.Soyisim = entity.Soyisim;
+                    musteri.Telefon = entity.Telefon;
+                    musteri.Email = entity.Email;
+                    musteri.Adres = entity.Adres;
+                    musteri.EhliyetYasi = entity.EhliyetYasi;
+                    musteri.Yas = entity.Yas;
+                    data.SaveChanges();
+                }
+                //Return the results of query/ies
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
+                throw new Exception("CustomerRepository::Update:Error occured.", ex);
+            }
         }
+        
         public void Dispose()
         {
-            Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void Dispose(bool bDisposing)
-        {
-            // Check the Dispose method called before.
-            if (!_bDisposed)
-            {
-                if (bDisposing)
-                {
-                    // Clean the resources used.
-                    _dbProviderFactory = null;
-                }
-
-                _bDisposed = true;
-            }
-        }
+        
     }
 }
