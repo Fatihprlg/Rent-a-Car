@@ -16,10 +16,7 @@ namespace Rent_a_Car.BusinessLogic.Concerets
         {
             GC.SuppressFinalize(true);
         }
-        public CustomerLogic()
-        {
-
-        }
+        
         public bool InsertCustomer(Customer entity)
         {
             try
@@ -34,7 +31,45 @@ namespace Rent_a_Car.BusinessLogic.Concerets
             catch (Exception ex)
             {
                 LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
-                throw new Exception("BusinessLogic:CustomerBusiness::InsertCustomer::Error occured.", ex);
+                throw new Exception("BusinessLogic:CustomerLogic::InsertCustomer::Error occured.", ex);
+            }
+        }
+        public Customer SelectCustomerById(int customerId)
+        {
+            try
+            {
+                Customer responseEntitiy;
+                using (var repo = new CustomerRepository())
+                {
+                    responseEntitiy = repo.SelectById(customerId);
+                    if (responseEntitiy == null)
+                        throw new NullReferenceException("Customer doesnt exists!");
+                }
+                return responseEntitiy;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
+                throw new Exception("BusinessLogic:CustomerLogic::SelectCustomerById::Error occured.", ex);
+            }
+        }
+        public Customer SelectCustomerByTCKN(string TCKN)
+        {
+            try
+            {
+                Customer responseEntitiy;
+                using (var repo = new CustomerRepository())
+                {
+                    responseEntitiy = repo.SelectByTCKN(TCKN);
+                    /*if (responseEntitiy == null)
+                        throw new NullReferenceException("Customer doesnt exists!");*/
+                }
+                return responseEntitiy;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
+                throw new Exception("BusinessLogic:CustomerLogic::SelectCustomerByTCKN::Error occured.", ex);
             }
         }
     }
