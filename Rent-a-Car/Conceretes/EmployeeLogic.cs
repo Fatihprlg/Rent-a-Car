@@ -16,6 +16,58 @@ namespace Rent_a_Car.Conceretes
         {
             GC.SuppressFinalize(true);
         }
+        public bool InsertEmployee(Employee entity)
+        {
+            try
+            {
+                bool isSuccess;
+                using (var repo = new EmployeeRepository())
+                {
+                    isSuccess = repo.Insert(entity);
+                }
+                return isSuccess;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
+                throw new Exception("BusinessLogic:EmployeeLogic::InsertEmployee::Error occured.", ex);
+            }
+        }
+        public bool UpdateEmployee(Employee entity)
+        {
+            try
+            {
+                bool isSuccess;
+                using (var repo = new EmployeeRepository())
+                {
+                    isSuccess = repo.Update(entity);
+                }
+                return isSuccess;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
+                throw new Exception("BusinessLogic:EmployeeLogic::UpdateEmployee::Error occured.", ex);
+            }
+        }
+        public bool DeleteEmployeeById(int id)
+        {
+            try
+            {
+                bool isSuccess;
+                using (var repo = new EmployeeRepository())
+                {
+                    isSuccess = repo.DeleteById(id);
+                }
+                return isSuccess;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
+                throw new Exception("BusinessLogic:EmployeeLogic::DeleteEmployeeById::Error occured.", ex);
+            }
+        }
+
         public Employee SelectEmployeeById(int id)
         {
             try
@@ -35,6 +87,25 @@ namespace Rent_a_Car.Conceretes
                 throw new Exception("BusinessLogic:EmployeeLogic::SelectEmployeeById::Error occured.", ex);
             }
         }
+
+        public IList<Employee> SelectAllEmployees()
+        {
+            IList<Employee> Employees = new List<Employee>();
+            try
+            {
+                using (var repo = new EmployeeRepository())
+                {
+                    Employees = repo.SelectAll();
+                }
+                return Employees;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
+                throw new Exception("BusinessLogic:EmployeeLogic::SelectAllEmployees::Error occured.", ex);
+            }
+        }
+
         public bool LoginControl(string email, string password)
         {
             bool response = false;

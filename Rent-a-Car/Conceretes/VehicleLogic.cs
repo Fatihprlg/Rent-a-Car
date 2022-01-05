@@ -34,7 +34,23 @@ namespace Rent_a_Car.Conceretes
                 throw new Exception("BusinessLogic:VehicleLogic::InsertVehicle::Error occured.", ex);
             }
         }
-
+        public bool UpdateVehicle(Vehicle entity)
+        {
+            try
+            {
+                bool isSuccess;
+                using (var repo = new VehicleRepository())
+                {
+                    isSuccess = repo.Update(entity);
+                }
+                return isSuccess;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
+                throw new Exception("BusinessLogic:VehicleLogic::UpdateVehicle::Error occured.", ex);
+            }
+        }
         public IList<Vehicle> SelectAllVehicles()
         {
             IList<Vehicle> vehicles = new List<Vehicle>();
