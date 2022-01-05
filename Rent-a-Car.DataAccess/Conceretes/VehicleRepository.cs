@@ -10,7 +10,7 @@ using Rent_a_Car.Models.Concerets;
 
 namespace Rent_a_Car.DataAccess.Conceretes
 {
-    class VehicleRepository : IRepository<Vehicle>, IDisposable
+    public class VehicleRepository : IRepository<Vehicle>, IDisposable
     {
         public bool DeleteById(int id)
         {
@@ -72,7 +72,7 @@ namespace Rent_a_Car.DataAccess.Conceretes
             {
                 using (AracLazimEntities data = new AracLazimEntities())
                 {
-                    var aracListesi = from a in data.Araba select a;
+                    var aracListesi = data.Araba.ToList();
 
                     foreach (var a in aracListesi)
                     {
@@ -103,10 +103,63 @@ namespace Rent_a_Car.DataAccess.Conceretes
                 throw new Exception("VehicleRepository::Update:Error occured.", ex);
             }
         }
+        
+        public IList<Vehicle> FilterVehicles(DateTime startDate, DateTime endDate)
+        {
+            IList<Vehicle> response = new List<Vehicle>();
+            try
+            {
+                using(AracLazimEntities data = new AracLazimEntities()) // (kBaslangic,kBitis) (sBas,sBit) (sBas>=kBaslangic sBas<=kBitis) (sBit>kBaslangic sBit<kBitis) (sBas<kBaslangic sBit>kBitis) 
+                {
+                    var rents = data.KiralamaIslemi.ToList();
+                    var cars = SelectAll();
+
+                    //var cars = data.Araba.Where(a => rents.Exists(b => b.AracID == a.ID));
+                    var rentListesi = rents.Where(a => !(a.KiralamaBaslangici >= startDate && a.KiralamaBitisi >= startDate) || !(a.KiralamaBitisi >= endDate && a.KiralamaBaslangici <= endDate) || !(a.KiralamaBaslangici >= startDate && a.KiralamaBitisi <= endDate));
+
+                    foreach(var r in rentListesi)
+                    {
+                        if(r.Durum == false)
+                         response.Add(SelectById(r.AracID));
+                    }
+                    foreach(var c in cars)
+                    {
+                        if (!rents.Exists(r => r.AracID == c.ID))
+                        {
+                            Vehicle vehicle = new Vehicle()
+                            {
+                                ID = c.ID,
+                                Plaka = c.Plaka,
+                                Marka = c.Marka,
+                                Model = c.Model,
+                                Kilometre = c.Kilometre,
+                                GunlukKMSinir = c.GunlukKMSinir,
+                                GunlukFiyat = c.GunlukFiyat,
+                                Resim = c.Resim,
+                                Aciklama = c.Aciklama,
+                                Airbag = c.Airbag,
+                                BagajHacmi = c.BagajHacmi,
+                                KoltukSayisi = c.KoltukSayisi,
+                                YakitTuru = c.YakitTuru,
+                                SanzimanTuru = c.SanzimanTuru
+                            };
+
+                            response.Add(vehicle);
+                        }
+                    }
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
+                throw new Exception("VehicleRepository::FilterVehicles:Error occured.", ex);
+            }
+        }
 
         public Vehicle SelectById(int id)
         {
-            Vehicle entity = null;
+            Vehicle response = new Vehicle();
 
             try
             {
@@ -114,22 +167,22 @@ namespace Rent_a_Car.DataAccess.Conceretes
                 {
                     Araba arac = data.Araba.Where(a => a.ID == id).FirstOrDefault();
 
-                    entity.ID = arac.ID;
-                    entity.Plaka = arac.Plaka;
-                    entity.Marka = arac.Marka;
-                    entity.Model = arac.Model;
-                    entity.Kilometre = arac.Kilometre;
-                    entity.GunlukKMSinir = arac.GunlukKMSinir;
-                    entity.GunlukFiyat = arac.GunlukFiyat;
-                    entity.Resim = arac.Resim;
-                    entity.Aciklama = arac.Resim;
-                    entity.Airbag = arac.Airbag;
-                    entity.BagajHacmi = arac.BagajHacmi;
-                    entity.KoltukSayisi = arac.KoltukSayisi;
-                    entity.YakitTuru = arac.YakitTuru;
-                    entity.SanzimanTuru = arac.SanzimanTuru;
+                    response.ID = arac.ID;
+                    response.Plaka = arac.Plaka;
+                    response.Marka = arac.Marka;
+                    response.Model = arac.Model;
+                    response.Kilometre = arac.Kilometre;
+                    response.GunlukKMSinir = arac.GunlukKMSinir;
+                    response.GunlukFiyat = arac.GunlukFiyat;
+                    response.Resim = arac.Resim;
+                    response.Aciklama = arac.Aciklama;
+                    response.Airbag = arac.Airbag;
+                    response.BagajHacmi = arac.BagajHacmi;
+                    response.KoltukSayisi = arac.KoltukSayisi;
+                    response.YakitTuru = arac.YakitTuru;
+                    response.SanzimanTuru = arac.SanzimanTuru;
                 }
-                return entity;
+                return response;
             }
             catch (Exception ex)
             {

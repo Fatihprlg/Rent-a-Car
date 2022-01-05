@@ -41,7 +41,7 @@ namespace Rent_a_Car.DataAccess.Conceretes
             {
                 using (AracLazimEntities data = new AracLazimEntities())
                 {
-                    Musteri musteri  = new Musteri()
+                    Musteri musteri = new Musteri()
                     {
                         TC = entity.TC,
                         Isim = entity.Isim,
@@ -67,7 +67,7 @@ namespace Rent_a_Car.DataAccess.Conceretes
 
         public IList<Customer> SelectAll()
         {
-            IList<Customer> musteriler= new List<Customer>();
+            IList<Customer> musteriler = new List<Customer>();
             try
             {
                 using (AracLazimEntities data = new AracLazimEntities())
@@ -123,10 +123,44 @@ namespace Rent_a_Car.DataAccess.Conceretes
             catch (Exception ex)
             {
                 LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
-                throw new Exception("CustomerRepository::Update:Error occured.", ex);
+                throw new Exception("CustomerRepository::SelectById:Error occured.", ex);
             }
         }
+        public Customer SelectByTCKN(string TCKN)
+        {
+            try
+            {
+                Customer entity = null;
+                using (AracLazimEntities data = new AracLazimEntities())
+                {
+                    bool exists = data.Musteri.Any(m => m.TC == TCKN);
+                    if (exists)
+                    {
+                        Musteri musteri = data.Musteri.Where(m => m.TC.Equals(TCKN)).FirstOrDefault();
+                        entity = new Customer()
+                        {
+                            ID = musteri.ID,
+                            TC = musteri.TC,
+                            Isim = musteri.Isim,
+                            Soyisim = musteri.Soyisim,
+                            Telefon = musteri.Telefon,
+                            Email = musteri.Email,
+                            Adres = musteri.Adres,
+                            EhliyetYasi = musteri.EhliyetYasi,
+                            Yas = musteri.Yas
+                        };
 
+
+                    }
+                }
+                return entity;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
+                throw new Exception("CustomerRepository::SelectByTCKN:Error occured.", ex);
+            }
+        }
         public bool Update(Customer entity)
         {
             try
@@ -154,12 +188,12 @@ namespace Rent_a_Car.DataAccess.Conceretes
                 throw new Exception("CustomerRepository::Update:Error occured.", ex);
             }
         }
-        
+
         public void Dispose()
         {
             GC.SuppressFinalize(this);
         }
 
-        
+
     }
 }

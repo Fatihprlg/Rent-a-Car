@@ -52,10 +52,15 @@
   <ItemGroup>
     <Compile Include="Abstractions\IRepository.cs" />
     <Compile Include="Araba.cs">
-      <DependentUpon>EntityModel.tt</DependentUpon>
+      <DependentUpon>AracLazimContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AracLazimContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AracLazimContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Calisan.cs">
-      <DependentUpon>EntityModel.tt</DependentUpon>
+      <DependentUpon>AracLazimContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Conceretes\AdminRepository.cs" />
     <Compile Include="Conceretes\CustomerRepository.cs" />
@@ -67,25 +72,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EntityModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="EntityModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EntityModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="EntityModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>EntityModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="KiralamaIslemi.cs">
-      <DependentUpon>EntityModel.tt</DependentUpon>
+      <DependentUpon>AracLazimContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Musteri.cs">
-      <DependentUpon>EntityModel.tt</DependentUpon>
+      <DependentUpon>AracLazimContext.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Yonetici.cs">
-      <DependentUpon>EntityModel.tt</DependentUpon>
+      <DependentUpon>AracLazimContext.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -106,21 +106,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
+    <None Include="ClassDiagram1.cd" />
     <None Include="EntityModel.edmx.diagram">
       <DependentUpon>EntityModel.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AracLazimContext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AracLazimContext.cs</LastGenOutput>
+    </Content>
     <Content Include="EntityModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EntityModel.Context.cs</LastGenOutput>
       <DependentUpon>EntityModel.edmx</DependentUpon>
-    </Content>
-    <Content Include="EntityModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>EntityModel.edmx</DependentUpon>
-      <LastGenOutput>EntityModel.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>

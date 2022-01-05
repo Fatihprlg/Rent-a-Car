@@ -14,7 +14,7 @@ using Rent_a_Car.DataAccess;
 namespace Rent_a_Car.DataAccess.Conceretes
 {
 
-    class AdminRepository : IRepository<Admin>, IDisposable
+    public class AdminRepository : IRepository<Admin>, IDisposable
     {
 
         public bool DeleteById(int id)

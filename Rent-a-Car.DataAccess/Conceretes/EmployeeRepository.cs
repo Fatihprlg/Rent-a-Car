@@ -12,7 +12,7 @@ using Rent_a_Car.Models.Concerets;
 
 namespace Rent_a_Car.DataAccess.Conceretes
 {
-    class EmployeeRepository : IRepository<Employee>, IDisposable
+    public class EmployeeRepository : IRepository<Employee>, IDisposable
     {
 
         public bool DeleteById(int id)

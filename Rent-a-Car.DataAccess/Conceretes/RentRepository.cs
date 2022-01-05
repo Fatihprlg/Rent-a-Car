@@ -10,8 +10,9 @@ using Rent_a_Car.Models.Concerets;
 
 namespace Rent_a_Car.DataAccess.Conceretes
 {
-    class RentRepository : IRepository<Rent>, IDisposable
+    public class RentRepository : IRepository<Rent>, IDisposable
     {
+        
         public bool DeleteById(int id)
         {
             try
@@ -70,6 +71,7 @@ namespace Rent_a_Car.DataAccess.Conceretes
                     foreach (var i in islemListesi)
                     {
                         Rent temp = new Rent();
+                        temp.IslemID = i.IslemID;
                         temp.AracID = i.AracID;
                         temp.MusteriID = i.MusteriID;
                         temp.KiralamaBaslangici = i.KiralamaBaslangici;
@@ -77,6 +79,7 @@ namespace Rent_a_Car.DataAccess.Conceretes
                         temp.BaslangicKM = i.BaslangicKM;
                         temp.TeslimKM = i.TeslimKM;
                         temp.AlinanUcret = i.AlinanUcret;
+                        temp.Durum = i.Durum;
 
                         islemler.Add(temp);
                     }
@@ -108,6 +111,7 @@ namespace Rent_a_Car.DataAccess.Conceretes
                     entity.BaslangicKM= islem.BaslangicKM;
                     entity.TeslimKM= islem.TeslimKM;
                     entity.AlinanUcret = islem.AlinanUcret;
+                    entity.Durum = islem.Durum;
                 }
                 return entity;
             }
@@ -115,6 +119,51 @@ namespace Rent_a_Car.DataAccess.Conceretes
             {
                 LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
                 throw new Exception("RentRepository::SelectById:Error occured.", ex);
+            }
+        }
+
+        public IDictionary<int, int> RentCounts()
+        {
+            try
+            {
+                IDictionary<int, int> response = new Dictionary<int, int>();
+                using (AracLazimEntities data = new AracLazimEntities())
+                {
+                    response.Add(0, data.KiralamaIslemi.Count());
+                    for (int i = 1; i <= 12; i++)
+                    {
+                        int day = DateTime.Now.Day;
+                        int month = DateTime.Now.Month - i;
+                        /*int endMonth = month + 1;*/
+                        int year = DateTime.Now.Year;
+                        /*int endYear = year;*/
+                        if (month <= 0)
+                        {
+                            month = 12 - (i-1);
+                           /* endMonth = (month == 12) ? 1 : month+1;*/
+                            year -= 1;
+                        }
+                        
+                        /*if (month > DateTime.Now.Month && endMonth >)
+                        {
+                            year -= 1;
+                            if (month < 12) endYear = year;
+                        }*/
+
+                        DateTime startDate = new DateTime(year, month, day);
+                        DateTime endDate = new DateTime(year, month, day).AddMonths(1);
+
+                        response.Add(i, data.KiralamaIslemi.Where(k => k.KiralamaBaslangici > startDate && k.KiralamaBitisi < endDate).Count());
+
+                    }
+
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+                LogHelper.Log(LogTarget.File, ExceptionHelper.ExceptionToString(ex), true);
+                throw new Exception("RentRepository::RentCounts:Error occured.", ex);
             }
         }
 
@@ -127,6 +176,7 @@ namespace Rent_a_Car.DataAccess.Conceretes
                     KiralamaIslemi islem = data.KiralamaIslemi.Where(i => i.IslemID == entity.IslemID).FirstOrDefault();
 
                     islem.TeslimKM = entity.TeslimKM;
+                    islem.Durum = entity.Durum;
 
                     data.SaveChanges();
                 }

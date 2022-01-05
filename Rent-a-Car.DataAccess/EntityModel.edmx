@@ -50,6 +50,7 @@
           <Property Name="BaslangicKM" Type="bigint" Nullable="false" />
           <Property Name="TeslimKM" Type="bigint" />
           <Property Name="AlinanUcret" Type="float" Nullable="false" />
+          <Property Name="Durum" Type="bit" />
         </EntityType>
         <EntityType Name="Musteri">
           <Key>
@@ -170,6 +171,7 @@
           <Property Name="BaslangicKM" Type="Int64" Nullable="false" />
           <Property Name="TeslimKM" Type="Int64" />
           <Property Name="AlinanUcret" Type="Double" Nullable="false" />
+          <Property Name="Durum" Type="Boolean" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -241,6 +243,7 @@
           <EntitySetMapping Name="KiralamaIslemis">
             <EntityTypeMapping TypeName="AracLazimModel.KiralamaIslemi">
               <MappingFragment StoreEntitySet="KiralamaIslemi">
+                <ScalarProperty Name="Durum" ColumnName="Durum" />
                 <ScalarProperty Name="AlinanUcret" ColumnName="AlinanUcret" />
                 <ScalarProperty Name="TeslimKM" ColumnName="TeslimKM" />
                 <ScalarProperty Name="BaslangicKM" ColumnName="BaslangicKM" />

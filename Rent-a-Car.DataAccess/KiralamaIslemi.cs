@@ -22,5 +22,6 @@ namespace Rent_a_Car.DataAccess
         public long BaslangicKM { get; set; }
         public Nullable<long> TeslimKM { get; set; }
         public double AlinanUcret { get; set; }
+        public Nullable<bool> Durum { get; set; }
     }
 }
